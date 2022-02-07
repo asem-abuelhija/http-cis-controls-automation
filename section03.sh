@@ -46,8 +46,39 @@ else
 ./check.sh "3.6: Ensure Other Write Access on Apache Directories and Files Is Restricted" PASS
 fi
 
+#3.7
 if [[ ! $(grep CoreDumpDirectory $APACHE_PREFIX/conf/httpd.conf | grep -v "^#") ]]; then
 ./check.sh "3.7: Ensure the Core Dump Directory Is Secured" PASS
 else
 ./check.sh "3.7: Ensure the Core Dump Directory Is Secured" MANUAL
 fi
+
+#3.8
+if [[ ! $(grep LockFile $APACHE_PREFIX/conf/httpd.conf | grep -v "^#") ]]; then
+./check.sh "3.8: Ensure the Lock File Is Secured" PASS
+else
+./check.sh "3.8: Ensure the Lock File Is Secured" MANUAL
+fi
+
+#3.9
+if [[ ! $(grep PidFile $APACHE_PREFIX/conf/httpd.conf | grep -v "^#") ]]; then
+./check.sh "3.9: Ensure the Pid File Is Secured" PASS
+else
+./check.sh "3.9: Ensure the Pid File Is Secured" MANUAL
+fi
+
+#3.10
+if [[ ! $(grep ScoreBoardFile $APACHE_PREFIX/conf/httpd.conf | grep -v "^#") ]]; then
+./check.sh "3.10: Ensure the ScoreBoard File Is Secured" PASS
+else
+./check.sh "3.10: Ensure the ScoreBoard File Is Secured" MANUAL
+fi
+
+#3.11
+linecount=$(find -L $APACHE_PREFIX \! -type l -perm /g=w -ls |wc -l)
+if [[ $linecount != 0 ]]; then
+./check.sh "3.11: Ensure Group Write Access for the Apache Directories and Files Is Properly Restricted" FAIL
+else
+./check.sh "3.11: Ensure Group Write Access for the Apache Directories and Files Is Properly Restricted" PASS
+fi
+
