@@ -1,9 +1,6 @@
 #!/bin/bash
-CYAN='\033[1;36m'
-NC='\033[0m'
-
 #2.1
-echo -e "2.1: Ensure Only Necessary Authentication and Authorization Modules Are Enabled ===> ${CYAN}Not Scored${NC}"
+./check.sh "2.1: Ensure Only Necessary Authentication and Authorization Modules Are Enabled" NOTSCORED
 
 #2.2
 Output=$(grep 'log_config' $APACHE_PREFIX/conf/httpd.conf 2>/dev/null)
