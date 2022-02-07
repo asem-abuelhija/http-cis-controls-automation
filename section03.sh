@@ -46,3 +46,8 @@ else
 ./check.sh "3.6: Ensure Other Write Access on Apache Directories and Files Is Restricted" PASS
 fi
 
+if [[ ! $(grep CoreDumpDirectory $APACHE_PREFIX/conf/httpd.conf | grep -v "^#") ]]; then
+./check.sh "3.7: Ensure the Core Dump Directory Is Secured" PASS
+else
+./check.sh "3.7: Ensure the Core Dump Directory Is Secured" MANUAL
+fi
