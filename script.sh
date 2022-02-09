@@ -1,4 +1,5 @@
 #!/bin/bash
+export DOCROOT=$(grep '^DocumentRoot' $APACHE_PREFIX/conf/httpd.conf | cut -d' ' -f2)
 ./section01.sh
 ./section02.sh
 ./section03.sh

@@ -82,3 +82,14 @@ else
 ./check.sh "3.11: Ensure Group Write Access for the Apache Directories and Files Is Properly Restricted" PASS
 fi
 
+#3.12
+linecount=$(find -L $DOCROOT \! -type l -perm /g=w -ls |wc -l)
+if [[ $linecount != 0 ]]; then
+./check.sh "3.12: Ensure Group Write Access for the Document Root Directories and Files Is Properly Restricted" FAIL
+else
+./check.sh "3.12: Ensure Group Write Access for the Document Root Directories and Files Is Properly Restricted" PASS
+fi
+
+
+#3.13
+./check.sh "3.13: Ensure Access to Special Purpose Application Writable Directories is Properly Restricted" NOTSCORED
