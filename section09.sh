@@ -46,6 +46,34 @@ else
 ./check.sh "9.4: Ensure KeepAliveTimeout is Set to a Value of 15 or Less" FAIL;
 fi
 fi
-
 #9.5
+if [[ $( grep -v '^#'  $APACHE_PREFIX/conf/httpd.conf 2>/dev/null| grep "reqtimeout_module") ]]; then
+./check.sh "9.5: Ensure the Timeout Limits for Request Headers is Set to 40 or Less" PASS
+else
+	if [[ $(grep -v '^#'  $APACHE_PREFIX/conf/httpd.conf| grep 'RequestReadTimeout'  2>/dev/null) ]]; then
+		headerMax=$(grep -v '^#'  $APACHE_PREFIX/conf/httpd.conf 2>/dev/null| grep 'RequestReadTimeout'|grep -o ' header=[0-9]*-[0-9]*'| cut -d '-' -f2 2>/dev/null)
+		if [[ $headerMax -le 40 ]]; then 
+		./check.sh "9.5: Ensure the Timeout Limits for Request Headers is Set to 40 or Less" PASS;
+		else
+		./check.sh "9.5: Ensure the Timeout Limits for Request Headers is Set to 40 or Less" FAIL;
+		fi
+	else
+        ./check.sh "9.5: Ensure the Timeout Limits for Request Headers is Set to 40 or Less" FAIL;
+        fi
+fi
 
+#9.6
+if [[ $( grep -v '^#'  $APACHE_PREFIX/conf/httpd.conf 2>/dev/null| grep "reqtimeout_module") ]]; then
+./check.sh "9.5: Ensure the Timeout Limits for Request Headers is Set to 40 or Less" PASS
+else
+	if [[ $(grep -v '^#'  $APACHE_PREFIX/conf/httpd.conf| grep 'RequestReadTimeout'  2>/dev/null) ]]; then
+        	headerMax=$(grep -v '^#'  $APACHE_PREFIX/conf/httpd.conf| grep 'RequestReadTimeout'|grep -o ' body=[0-9]*'| cut -d '=' -f2 2>/dev/null)
+        	if [[ $headerMax -le 40 ]]; then
+        	./check.sh "9.6: Ensure Timeout Limits for the Request Body is Set to 20 or Less" PASS
+        	else
+        	./check.sh "9.6: Ensure Timeout Limits for the Request Body is Set to 20 or Less" FAIL
+        	fi
+	else
+	./check.sh "9.6: Ensure Timeout Limits for the Request Body is Set to 20 or Less" FAIL
+	fi
+fi
